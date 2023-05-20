@@ -20,6 +20,7 @@ class _ColorBoxGridState extends State<ColorBoxGrid> {
   };
 
   List<Color> selectedColors = [];
+  List<String> selectedNames = [];
 
   @override
   void initState() {
@@ -31,6 +32,10 @@ class _ColorBoxGridState extends State<ColorBoxGrid> {
     final random = Random();
 
     final availableColors = boxData.keys.toList();
+    final availableNames = boxData.values.toList();
+
+    availableNames.shuffle(random);
+    selectedNames = availableNames.sublist(0, 4);
 
     while (selectedColors.length < 4) {
       final randomIndex = random.nextInt(availableColors.length);
@@ -47,15 +52,15 @@ class _ColorBoxGridState extends State<ColorBoxGrid> {
     return GridView.count(
       crossAxisCount: 2,
       children: selectedColors.map((color) {
-        final text = boxData[color]!;
+        final name = selectedNames[selectedColors.indexOf(color)];
 
         return Container(
           color: color,
           child: Center(
             child: Text(
-              text,
+              name,
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 12,
                 fontWeight: FontWeight.bold,
                 color: color.computeLuminance() > 0.5
                     ? Colors.black
